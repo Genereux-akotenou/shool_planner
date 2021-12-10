@@ -1,0 +1,559 @@
+@font-face {
+    font-family: "Montserrat-bold";
+    src: url("../fonts/Montserrat/Montserrat-Bold.ttf");
+}
+@font-face {
+    font-family: "Montserrat-medium";
+    src: url("../fonts/Montserrat/Montserrat-Medium.ttf");
+}
+@font-face {
+    font-family: "Montserrat-light";
+    src: url("../fonts/Montserrat/Montserrat-Light.ttf");
+}
+@font-face {
+    font-family: "montserrat";
+    src: url("../fonts/Montserrat.ttf");
+}
+@font-face {
+    font-family: "Poppins-Black";
+    src: url("../fonts/Poppins/Poppins-Black.ttf");
+}
+@font-face {
+    font-family: "Poppins-Black";
+    src: url("../fonts/Poppins/Poppins-Black.ttf");
+}
+@font-face {
+    font-family: "Poppins-Bold";
+    src: url("../fonts/Poppins/Poppins-Bold.ttf");
+}
+@font-face {
+    font-family: "Poppins-ExtraLight";
+    src: url("../fonts/Poppins/Poppins-ExtraLight.ttf");
+}
+@font-face {
+    font-family: "Poppins-Regular";
+    src: url("../fonts/Poppins/Poppins-Regular.ttf");
+}
+@font-face {
+    font-family: "Poppins-Thin";
+    src: url("../fonts/Poppins/Poppins-Thin.ttf");
+}
+@font-face {
+    font-family: "Poppins-Medium";
+    src: url("../fonts/Poppins/Poppins-Medium.ttf");
+}
+
+*::selection{
+    background-color: #aca0a0;
+    font-family: "montserrat", 'Courier New', Courier, monospace;
+}
+
+
+input, select{
+  outline: none !important;
+}
+button{
+  cursor: pointer;
+}
+html{
+    color: #231f20;
+    font-size: 13px;
+    font-family: Asap, Arial, sans-serif;
+    line-height: 1.7;
+    letter-spacing: .5px;
+    scroll-behavior: smooth;
+    /* scrollbar-color: #b74101 #393b44; */
+    overflow-x: hidden;
+}
+
+body{
+    margin-bottom: 0;
+    margin-top: 0;
+    background-color: #009b9e;
+    font-family: 'Poppins-Regular', 'montserrat', Georgia, 'Times New Roman', Times, serif;
+}
+.gFlex{
+    display: flex;
+    justify-content: center;
+}
+.gFlex a{
+    text-decoration: none;
+    color: black;
+    /* font-weight: bold; */
+}
+.jc-sb{
+    justify-content: space-between;
+}
+.jc-c{
+    justify-content: center;
+    align-items: center;
+}
+.gBG{
+    background-color: gray;
+}
+.border-b1{
+    border-bottom: 1px solid #ddd;
+}
+.pb-2{
+    padding-bottom: 0.3em;
+}
+.gButton{
+    width: 10em;
+    padding: 0.5em 1em;
+    box-shadow: 0 5px 10px -4px rgba(77, 75, 75, 0.301);
+    background-color: #007c7f;
+    border-radius: 5px;
+    transition: all .5s ease-in;
+    margin-inline-end: 2em;
+    text-align: center;
+    color: white;
+    font-size: 0.9em;
+}
+.gButton:hover{
+    background-color: #065455;
+}
+.login:hover{
+    background-color: #0d7c7e;
+}
+.gContainer{
+    width: 50%;
+    height: 3em;
+    position: absolute;
+    top: 1.5em;
+    /* bottom: 0; */
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+.input-co input, button{
+    margin: 0.5em;
+    padding-left: 1em;
+}
+.input-co button{
+    background-color: #065455;
+    padding-left: 1em;
+    padding-right: 1em;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    color: white;
+}
+
+/* *************************************** */
+header{
+    width: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1.5em 0;
+    background-color: #009b9e;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 10000;
+}
+.header{
+    width: 80%;
+    display: flex;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 0.5em;
+}
+header div a{
+    text-decoration: none;
+}
+.gLogo{
+    background-color: black;
+    background-color: transparent !important;
+    font-weight: bold;
+    box-shadow: none;
+    width: 12em;
+    font-size: 1.25em;
+}
+.dot{
+    display: inline-block;
+    padding: 0.3em;
+    margin-right: 0.4em;
+    margin-bottom: 0.05em;
+    background-color: orange;
+    border-radius: 100%;
+}
+.login-form{
+    width: 28em;
+    height: 27em;
+    background-color: #007c7f;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+    border-radius: 5px;
+    padding: 0.5em 1em;
+    transition: all .5s ease-in;
+}
+.register-form{
+    height: 27em;
+}
+.R-login{
+    margin-top: 3.3em !important;
+}
+.teacherGate{
+    background-color: white;
+    text-align: center;
+    font-weight: bold;
+    width: 13em;
+    margin: auto;
+    padding: 0.3em 0.8em;
+    border-radius: 3px;
+    position: relative;
+    top: -1.2em;
+    color: rgb(43, 43, 43);
+}
+.teacherGate span{
+    font-size: 0.75em;
+}
+
+.gLineField{
+    margin-bottom: 0.3em;
+    width: 100%;
+    /* background-color: red; */
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.7em;
+    margin-bottom: 1.5em;
+    position: relative;
+}
+.gLineField label{
+    font-size: 0.8em;
+    position: relative;
+    color: white;
+}
+.gLineField input{
+    display: block;
+    border: 1px solid #ddd;
+    padding: 0.7em 1em;
+    font-size: 0.8em;
+    color: rgb(43, 43, 43);
+}
+input:focus{
+    border: 1px solid rgb(39, 59, 57);
+    outline: none !important;
+}
+.remb{
+    width: 100%;
+    justify-content: space-between;
+    height: 2em;
+    z-index: 100;
+}
+.login{
+    border: none !important;
+    padding: 0.7em 0.8em !important;
+    width: 9em !important;
+    color: white !important;
+    border-radius: 4px;
+    font-size: 0.8em;
+    position: relative;
+    bottom: 0.4em;
+    cursor: pointer;
+    background-color: #065455 !important;
+
+    /* background-color: #065455;
+    padding: 0.5em 1em;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    color: white; */
+}
+.d-flex{
+    display: flex !important;
+    flex-direction: row;
+}
+.ttx{
+    font-size: 0.8em;
+}
+.ttx{
+
+}
+.r-memory{
+    position: relative;
+    top: 1em;
+}
+.r-memory label{
+    position: relative;
+    top: 0.4em;
+    left: 0.3em;
+}
+.m1-2{
+    margin-top: 1.5em;
+}
+.planning{
+    width: 88%;
+    min-height: 100vh;
+    margin: auto;
+    background-color: white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    /* padding: 0.5em; */
+}
+.planning-header{
+    padding: 1em 1em;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: right;
+}
+.planning-header-prof{
+    justify-content: space-between !important;
+}
+main{
+    margin-top: 7em;
+}
+.data-selector{
+    /* float: right; */
+    min-width: 13em;
+    padding: 0.3em;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    color: #525252;
+}
+.kind-selector{
+    min-width: 7em;
+    padding: 0.3em;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-right: 0.5em;
+    color: #777777;
+}
+.loader{
+    position: fixed;
+    top: 9em;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+.planning-content{
+    padding: 1em 1em;
+    /* border-bottom: 1px solid #ddd; */
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    /* position: relative; */
+}
+.planning-obj{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    background-color: #e6e6e6;
+    align-items: center;
+    flex-grow: 1;
+    margin-bottom: 0.5em;
+}
+.planning-obj:nth-child(2n){
+    background-color: #ddedee;
+}
+.planning-obj div{
+    padding: 0.7em 0.5em;
+    width: 38%;
+}
+.t_type{
+    width: 15% !important;
+}
+.t_emtity{
+    width: 35% !important;
+    padding-left: 2em !important;
+}
+.t_time{
+    color: white;
+    width: 10% !important;
+    /* padding-left: 2em !important; */
+    font-weight: bold;
+    text-align: center;
+    background-color: rgb(245, 181, 86);
+}
+.t_free{
+    background-color: rgb(80, 174, 80);
+    /* color: black; */
+}
+.menu{
+    display: flex;
+}
+.menu a{
+    margin-right: 0.8em;
+    /* text-decoration: none; */
+}
+.menuBtn{
+
+}
+.current{
+    color: orangered;
+    text-decoration: none;
+}
+.emptyResult{
+    position: fixed;
+    top: 9em;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 13em;
+    height: 3.5em;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.reservation{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 80%;
+    color: black;
+    margin: auto;
+    margin-top: 5em;
+    /* height: 5em; */
+    /* background-color: orange; */
+}
+.tBlack{
+    color: black !important;
+}
+.ks2{
+    padding: 0.5em 1em;
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+}
+.gLineFieldLast{
+    position: relative;
+    top: 1.2em;
+    border-top: 2px solid orange;
+    padding-top: 0.3em;
+}
+.gMt-2{
+    margin-top: 3px;
+}
+.float-right{
+    float: right;
+}
+.baseColor2-text{
+    color: #4f0649 !important;
+}
+.swp{
+    cursor: pointer;
+}
+
+.gConnect{
+    transition:  all .3s ease-in;
+}
+.gConnect2{
+    opacity: 0;
+    display: none;
+    transition:  all .5s ease-in;
+}
+
+
+#hideMe {
+    -moz-animation: hideAnimation 0s ease-in 4s forwards;
+    /* Firefox */
+    -webkit-animation: hideAnimation 0s ease-in 4s forwards;
+    /* Safari and Chrome */
+    -o-animation: hideAnimation 0s ease-in 4s forwards;
+    /* Opera */
+    animation: hideAnimation 0s ease-in 4s forwards;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+}
+@keyframes hideAnimation {
+    to {
+        visibility: hidden;
+        width:0;
+        height:0;
+    }
+}
+@-webkit-keyframes hideAnimation {
+    to {
+        visibility:hidden;
+        width:0;
+        height:0;
+    }
+}
+.error-form{
+    color: orange;
+    font-size: 0.9em;
+    margin-bottom: 0;
+    margin-top: 0;
+    position: absolute;
+    bottom: -1.6em;
+    font-weight: bold;
+}
+.fail-login{
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    padding: 0.5em 1em;
+    font-size: 0.7em;
+    margin-bottom: 0;
+    margin-top: 0;
+    /* position: relative; */
+    /* bottom: 0.7em; */
+    display: flex;
+    margin: auto;
+    text-align: center;
+    min-width: 10em;
+    margin: auto;
+    transition: all .5s ease-in;
+    position: absolute;
+    top: 4em;
+    left: 1.4em;
+    right: 1.4em;
+    height: 3em;
+}
+.gAlert{
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    padding: 0.5em 1em;
+    font-size: 0.85em;
+    margin-bottom: 0;
+    margin-top: 0;
+    display: flex;
+    margin: auto;
+    text-align: center;
+    min-width: 10em;
+    margin: auto;
+    transition: all .5s ease-in;
+    position: absolute;
+    left: 1.4em;
+    right: 1.4em;
+    height: 3.5em;
+    width: 68%;
+    position: fixed;
+    bottom: 1em !important;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    opacity: 0;
+}
+.gBack-green{
+    background-color: rgba(70, 223, 70, 0.884) !important;
+}
+.orange{
+    color: orangered !important;
+    font-weight: bold;
+}
+.fw-bold{
+    font-weight: bold;
+}
+.matreel{
+    cursor: pointer;
+    transition: all .5s ease-in;
+}
+.matreel:hover{
+    background-color: #d6d6d6;
+}
