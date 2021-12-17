@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <!-- Scripts link  -->
     <script src="script/my_script.js"></script>
+    <script src="/script/jquery.min.js"></script>
     <!-- window title  -->
     <title>Atelier GL</title>
     <!-- 20210914_0921 -->
@@ -31,7 +32,7 @@
     </header>
     <main>
         <div class="planning">
-            <div class="planning-header planning-header-prof">
+            <div class="planning-header planning-header-prof d-flex flex-column">
                 <!-- -------------------------------------------- -->
                 <div class="menu">
                     @if(auth()->check())
@@ -40,12 +41,37 @@
                         <a class="current3" href="/edit-recap"><div class="menuBtn">EDITER RECAP.HORAIRE</div></a>
                         <a class="current4" href="/read-recap"><div class="menuBtn">VOIR RECAP.HORAIRE</div></a>
 
+                        <a class="current1" href="/planning"><div class="menuBtn menuBtn-mobil"><i class="fa fa-eye"></i></div></a>
+                        <a class="current2" href="/reservation-step1"><div class="menuBtn menuBtn-mobil"><i class="fa fa-tasks"></i></div></a>
+                        <a class="current3" href="/edit-recap"><div class="menuBtn menuBtn-mobil"><i class="fa fa-edit"></i></div></a>
+                        <a class="current4" href="/read-recap"><div class="menuBtn menuBtn-mobil"><i class="fa fa-print"></i></div></a>
                     @endif
                 </div>
                 <!-- -------------------------------------------- -->
                 <div>
-                    <form action="/filterer-reservation" method="post" id="gBrainForm">
+                    <form action="/planning" method="post" id="gBrainForm">
                         {{ csrf_field(); }}
+
+                        <span id="resultSwiper" class="result-swiper">
+                            <!-- {{ session()->get('calendarForm') }} -->
+                            @if(session()->get('calendarForm') == 'calendar' || session()->get('calendarForm') == null)
+                                <i id="calendar" class="fa fa-calendar"></i>
+                                <i id="listshow" class="fa fa-tasks hidden"></i>
+                            @else
+                                <i id="listshow" class="fa fa-tasks"></i>
+                                <i id="calendar" class="fa fa-calendar hidden"></i>
+                            @endif
+                        </span>
+                        <script>
+                            $("#resultSwiper").on('click', function () {
+                                // $.ajax({
+                                //     method: 'GET',
+                                //     url: '/preferences',
+                                //     data: { calendarForm: document.getElementById('resultSwiper').children[0].id }
+                                // })
+                                window.location.href = '/preferences/'+document.getElementById('resultSwiper').children[1].id;
+                            });
+                        </script>
 
                         <select class="kind-selector disabled" name="type_input" id="type" required>
                             <option value="default">type</option>

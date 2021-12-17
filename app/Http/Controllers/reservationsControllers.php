@@ -16,6 +16,7 @@ class reservationsControllers extends Controller
             'debut_reservation' => 'required | string',
             'fin_reservation'   => 'required | string',
             'type_reservation'  => 'required | string',
+            'occupant'          => 'required | string',
         ]);
 
         $data = [
@@ -23,6 +24,7 @@ class reservationsControllers extends Controller
             'debut_reservation' => request('debut_reservation'),
             'fin_reservation'   => request('fin_reservation'),
             'type_reservation'  => request('type_reservation'),
+            'occupant'          => request('occupant'),
         ];
 
         if(request('date_reservation') == 'default' || request('type_reservation') == 'default') {
@@ -36,7 +38,7 @@ class reservationsControllers extends Controller
         $current_reservation = Reservation::where([
             ['type',       '=',  request('type_reservation')],
             ['date_debut', '>=', $date1],
-            ['date_fin',   '>=', $date2], // normally <=
+            ['date_fin',   '<=', $date2], // normally <=
         ])->pluck('material_id');
 
         // get reservation id
@@ -66,6 +68,8 @@ class reservationsControllers extends Controller
         session(['debut_reservation' => $date1]);
         session(['fin_reservation' => $date2]);
         session(['type_reservation' => request('type_reservation')]);
+        session(['occupant' => request('occupant')]);
+
 
         // return dump($material_free);
         return view('tools.reservation-step2', ["materials" => $material_free, "data" => $data]);
@@ -81,7 +85,7 @@ class reservationsControllers extends Controller
             'material_id' => request('choice'),
             'date_debut'  => session('debut_reservation'),
             'date_fin'    => session('fin_reservation'),
-            'occupant'    => explode('@', auth()->user()['email'])[0],
+            'occupant'    => session('occupant'), //explode('@', auth()->user()['email'])[0],
         ]);
 
         // request()->session()->flush();
@@ -90,7 +94,7 @@ class reservationsControllers extends Controller
 
     public function get_today_reservation() {
         $date_start = date('Y-m-d', time()).' 00:00:00';
-        $date_end = date('Y-m-d', time()+(86400)).' 00:00:00';
+        $date_end = date('Y-m-d', time()).' 23:59:59'; //time()+(86400)
 
         $reservation_salle = Reservation::leftjoin('salles', 'reservations.material_id', '=', 'salles.id')
         ->where([
@@ -116,16 +120,52 @@ class reservationsControllers extends Controller
                 'libele'    => $salle['libele'],
                 'date'      => explode(' ', $salle['date_debut'])[1] . ' - ' . explode(' ', $salle['date_fin'])[1],
                 'occupant'  => $salle['occupant'],
+                'nature'    => 'real',
+                'start_h'   => intval(explode(' ', $salle['date_debut'])[1][0] . explode(' ', $salle['date_debut'])[1][1]),
+                'total_h'   => intval(explode(' ', $salle['date_fin'])[1][0] . explode(' ', $salle['date_fin'])[1][1]) - intval(explode(' ', $salle['date_debut'])[1][0] . explode(' ', $salle['date_debut'])[1][1]),
             ]);
+            $last = $today_reservation[count($today_reservation)-1];
+            if($last['total_h'] > 1) {
+                for($i = 0; $i < $last['total_h']-1; $i++) {
+                    array_push($today_reservation, [
+                        'type'      => $last['type'],
+                        'libele'    => $last['libele'],
+                        'date'      => null,
+                        'occupant'  => $last['occupant'],
+                        'nature'    => 'fake',
+                        'start_h'   => $last['start_h'] + $i + 1,
+                        'total_h'   => 1,
+                    ]);
+                }
+            }
         }
-        foreach($reservation_material as $meterial) {
+        foreach($reservation_material as $salle) {
             array_push($today_reservation, [
-                'type'      => $meterial['type'],
-                'libele'    => $meterial['libele'],
-                'date'      => explode(' ', $meterial['date_debut'])[1] . ' - ' . explode(' ', $meterial['date_fin'])[1],
-                'occupant'  => $meterial['occupant'],
+                'type'      => $salle['type'],
+                'libele'    => $salle['libele'],
+                'date'      => explode(' ', $salle['date_debut'])[1] . ' - ' . explode(' ', $salle['date_fin'])[1],
+                'occupant'  => $salle['occupant'],
+                'nature'    => 'real',
+                'start_h'   => intval(explode(' ', $salle['date_debut'])[1][0] . explode(' ', $salle['date_debut'])[1][1]),
+                'total_h'   => intval(explode(' ', $salle['date_fin'])[1][0] . explode(' ', $salle['date_fin'])[1][1]) - intval(explode(' ', $salle['date_debut'])[1][0] . explode(' ', $salle['date_debut'])[1][1]),
             ]);
+            $last = $today_reservation[count($today_reservation)-1];
+            if($last['total_h'] > 1) {
+                for($i = 0; $i < $last['total_h']-1; $i++) {
+                    array_push($today_reservation, [
+                        'type'      => $last['type'],
+                        'libele'    => $last['libele'],
+                        'date'      => null,
+                        'occupant'  => $last['occupant'],
+                        'nature'    => 'fake',
+                        'start_h'   => $last['start_h'] + $i + 1,
+                        'total_h'   => 1,
+                    ]);
+                }
+            }
         }
+
+        // return dump($today_reservation);
 
         return view('tools.planning', [
             'reservations' => $today_reservation,
@@ -146,7 +186,7 @@ class reservationsControllers extends Controller
         // init param
         $type = request('type_input');
         $date_start = request('date_input').' 00:00:00';
-        $date_end = date('Y-m-d', strtotime(request('date_input')) + 86400).' 00:00:00';
+        $date_end = date('Y-m-d', strtotime(request('date_input')) + 0).' 23:59:59';
 
         // filtering
         $reservation = null;
@@ -175,15 +215,49 @@ class reservationsControllers extends Controller
                     'libele'    => $salle['libele'],
                     'date'      => explode(' ', $salle['date_debut'])[1] . ' - ' . explode(' ', $salle['date_fin'])[1],
                     'occupant'  => $salle['occupant'],
+                    'nature'    => 'real',
+                    'start_h'   => intval(explode(' ', $salle['date_debut'])[1][0] . explode(' ', $salle['date_debut'])[1][1]),
+                    'total_h'   => intval(explode(' ', $salle['date_fin'])[1][0] . explode(' ', $salle['date_fin'])[1][1]) - intval(explode(' ', $salle['date_debut'])[1][0] . explode(' ', $salle['date_debut'])[1][1]),
                 ]);
+                $last = $today_reservation[count($today_reservation)-1];
+                if($last['total_h'] > 1) {
+                    for($i = 0; $i < $last['total_h']-1; $i++) {
+                        array_push($today_reservation, [
+                            'type'      => $last['type'],
+                            'libele'    => $last['libele'],
+                            'date'      => null,
+                            'occupant'  => $last['occupant'],
+                            'nature'    => 'fake',
+                            'start_h'   => $last['start_h'] + $i + 1,
+                            'total_h'   => 1,
+                        ]);
+                    }
+                }
             }
-            foreach($reservation_material as $meterial) {
+            foreach($reservation_material as $salle) {
                 array_push($today_reservation, [
-                    'type'      => $meterial['type'],
-                    'libele'    => $meterial['libele'],
-                    'date'      => explode(' ', $meterial['date_debut'])[1] . ' - ' . explode(' ', $meterial['date_fin'])[1],
-                    'occupant'  => $meterial['occupant'],
+                    'type'      => $salle['type'],
+                    'libele'    => $salle['libele'],
+                    'date'      => explode(' ', $salle['date_debut'])[1] . ' - ' . explode(' ', $salle['date_fin'])[1],
+                    'occupant'  => $salle['occupant'],
+                    'nature'    => 'real',
+                    'start_h'   => intval(explode(' ', $salle['date_debut'])[1][0] . explode(' ', $salle['date_debut'])[1][1]),
+                    'total_h'   => intval(explode(' ', $salle['date_fin'])[1][0] . explode(' ', $salle['date_fin'])[1][1]) - intval(explode(' ', $salle['date_debut'])[1][0] . explode(' ', $salle['date_debut'])[1][1]),
                 ]);
+                $last = $today_reservation[count($today_reservation)-1];
+                if($last['total_h'] > 1) {
+                    for($i = 0; $i < $last['total_h']-1; $i++) {
+                        array_push($today_reservation, [
+                            'type'      => $last['type'],
+                            'libele'    => $last['libele'],
+                            'date'      => null,
+                            'occupant'  => $last['occupant'],
+                            'nature'    => 'fake',
+                            'start_h'   => $last['start_h'] + $i + 1,
+                            'total_h'   => 1,
+                        ]);
+                    }
+                }
             }
 
             $reservation = $today_reservation;
@@ -205,7 +279,24 @@ class reservationsControllers extends Controller
                     'libele'    => $salle['libele'],
                     'date'      => explode(' ', $salle['date_debut'])[1] . ' - ' . explode(' ', $salle['date_fin'])[1],
                     'occupant'  => $salle['occupant'],
+                    'nature'    => 'real',
+                    'start_h'   => intval(explode(' ', $salle['date_debut'])[1][0] . explode(' ', $salle['date_debut'])[1][1]),
+                    'total_h'   => intval(explode(' ', $salle['date_fin'])[1][0] . explode(' ', $salle['date_fin'])[1][1]) - intval(explode(' ', $salle['date_debut'])[1][0] . explode(' ', $salle['date_debut'])[1][1]),
                 ]);
+                $last = $reservation_result[count($reservation_result)-1];
+                if($last['total_h'] > 1) {
+                    for($i = 0; $i < $last['total_h']-1; $i++) {
+                        array_push($reservation_result, [
+                            'type'      => $last['type'],
+                            'libele'    => $last['libele'],
+                            'date'      => null,
+                            'occupant'  => $last['occupant'],
+                            'nature'    => 'fake',
+                            'start_h'   => $last['start_h'] + $i + 1,
+                            'total_h'   => 1,
+                        ]);
+                    }
+                }
             }
 
             $reservation = $reservation_result;
@@ -227,7 +318,24 @@ class reservationsControllers extends Controller
                     'libele'    => $material['libele'],
                     'date'      => explode(' ', $material['date_debut'])[1] . ' - ' . explode(' ', $material['date_fin'])[1],
                     'occupant'  => $material['occupant'],
+                    'nature'    => 'real',
+                    'start_h'   => intval(explode(' ', $material['date_debut'])[1][0] . explode(' ', $material['date_debut'])[1][1]),
+                    'total_h'   => intval(explode(' ', $material['date_fin'])[1][0] . explode(' ', $material['date_fin'])[1][1]) - intval(explode(' ', $material['date_debut'])[1][0] . explode(' ', $material['date_debut'])[1][1]),
                 ]);
+                $last = $reservation_result[count($reservation_result)-1];
+                if($last['total_h'] > 1) {
+                    for($i = 0; $i < $last['total_h']-1; $i++) {
+                        array_push($reservation_result, [
+                            'type'      => $last['type'],
+                            'libele'    => $last['libele'],
+                            'date'      => null,
+                            'occupant'  => $last['occupant'],
+                            'nature'    => 'fake',
+                            'start_h'   => $last['start_h'] + $i + 1,
+                            'total_h'   => 1,
+                        ]);
+                    }
+                }
             }
 
             $reservation = $reservation_result;
@@ -249,7 +357,24 @@ class reservationsControllers extends Controller
                     'libele'    => $material['libele'],
                     'date'      => explode(' ', $material['date_debut'])[1] . ' - ' . explode(' ', $material['date_fin'])[1],
                     'occupant'  => $material['occupant'],
+                    'nature'    => 'real',
+                    'start_h'   => intval(explode(' ', $material['date_debut'])[1][0] . explode(' ', $material['date_debut'])[1][1]),
+                    'total_h'   => intval(explode(' ', $material['date_fin'])[1][0] . explode(' ', $material['date_fin'])[1][1]) - intval(explode(' ', $material['date_debut'])[1][0] . explode(' ', $material['date_debut'])[1][1]),
                 ]);
+                $last = $reservation_result[count($reservation_result)-1];
+                if($last['total_h'] > 1) {
+                    for($i = 0; $i < $last['total_h']-1; $i++) {
+                        array_push($reservation_result, [
+                            'type'      => $last['type'],
+                            'libele'    => $last['libele'],
+                            'date'      => null,
+                            'occupant'  => $last['occupant'],
+                            'nature'    => 'fake',
+                            'start_h'   => $last['start_h'] + $i + 1,
+                            'total_h'   => 1,
+                        ]);
+                    }
+                }
             }
 
             $reservation = $reservation_result;
@@ -260,5 +385,13 @@ class reservationsControllers extends Controller
         return view('tools.planning', [
             'reservations' => $reservation,
         ]);
+    }
+
+    public function set_calendar_preferences() {
+        if(request('calendarForm') != null) {
+            session(['calendarForm' => request('calendarForm')]);
+            // return dump(session()->get('calendarForm'));
+        }
+        return back();
     }
 }

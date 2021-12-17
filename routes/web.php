@@ -6,10 +6,12 @@ use App\Http\Controllers\reservationsControllers;
 
 // GENERAL ROUTE EXTERNAL
 Route::get('/',  [reservationsControllers::class, 'get_today_reservation'])->name('today');
-Route::post('/filterer-reservation', [reservationsControllers::class, 'get_filterer_reservation']);
+Route::post('/planning', [reservationsControllers::class, 'get_filterer_reservation']);
 Route::get('/login', function () {
     return view('login');
 });
+Route::get('/preferences/{calendarForm}', [reservationsControllers::class, 'set_calendar_preferences']);
+
 
 // TEACHER ROUTE INTERNAL
 Route::middleware(['UserAuth'])->group(function () {

@@ -48,6 +48,10 @@
                 <option value="ordinateur">ordinateur</option>
             </select>
         </div>
+        <div class="gLineField">
+            <label class="tBlack" for="">ENTITE BENEFICIAIRE</label>
+            <input type="text" name="occupant" id="" required placeholder="ex : IFRI - PS5 - L2">
+        </div>
 
         <div class="gLineField d-flex remb">
             <div class="r-memory" style="display: flex;">

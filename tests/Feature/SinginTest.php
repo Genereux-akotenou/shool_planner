@@ -48,14 +48,14 @@ class SinginTest extends TestCase
             ->assertSessionHasErrors(['status']);
     }
 
-    // public function test_signin_with_invalid_small_password()
-    // {
-    //     $data = [
-    //         'email'    => 'genereux.akotenou@campus.uac.bj',
-    //         'password' => '00'
-    //     ];
-    //     $this->post('/login', $data)
-    //         ->assertRedirect('/planning')
-    //         ->assertSessionDoesntHaveErrors();
-    // }
+    public function test_signin_with_small_password_lenInf8()
+    {
+        $data = [
+            'email'    => 'genereux.akotenou@campus.uac.bj',
+            'password' => '00'
+        ];
+        $this->post('/login', $data)
+            ->assertRedirect('/')
+            ->assertSessionHasErrors(['password']);
+    }
 }

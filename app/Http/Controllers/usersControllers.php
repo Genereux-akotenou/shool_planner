@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Throwable;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,12 +16,30 @@ class usersControllers extends Controller
             'password-register_confirmation' => 'required'
         ]);
 
-        $utilisateur = User::create([
-            'email' => request('email-register'),
-            'password' => bcrypt(request('password-register')),
-        ]);
+        $validatedData = [
+            'email'     => request('email-register'),
+            'password'  => bcrypt(request('password-register')),
+        ];
 
-        return redirect('/login')->with('state', 'Account successfully created. Login right now !');
+        $newUser = new User();
+        $newUser->fill($validatedData);
+
+        try
+        {
+            $newUser->saveOrFail();
+        }
+        catch (Throwable)
+        {
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'status' => 'Oops! An error occur while trying to register.'
+                ]);
+        }
+
+        Auth::login($newUser, true);
+        return redirect('/');
+        // return redirect('/login')->with('state', 'Account successfully created. Login right now !');
     }
 
     public function logout(Request $request) {

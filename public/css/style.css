@@ -338,7 +338,7 @@ main{
     margin: auto;
 }
 .planning-content{
-    padding: 1em 1em;
+    padding: 1em 1em 0em 1em;
     /* border-bottom: 1px solid #ddd; */
     display: flex;
     justify-content: center;
@@ -556,4 +556,210 @@ main{
 }
 .matreel:hover{
     background-color: #d6d6d6;
+}
+
+
+/* g - Calendar - style */
+.gCalendar{
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    /* scrollbar-color: tranparent transparent !important; */
+}
+.calendarLine{
+    display: flex;
+    flex-direction: row;
+    width: 200%;
+    /* overflow-x: scroll; */
+}
+.calendarTime{
+    width: 2em;
+    padding: 1.85em 1em;
+    /* background-color: red; */
+    position: relative;
+}
+.calendarTime span{
+    position: absolute;
+    left: 0;
+    top: -0.6em;
+    color: #70757a;
+}
+.TaskContainer{
+    width: 100%;
+    /* background-color: yellowgreen; */
+    display: flex;
+    flex-direction: row;
+    border-top: 1px solid #ddd;
+}
+.separator{
+    width: 0.5em;
+    /* background-color: #009b9e; */
+    border-right: 1px solid #ddd;
+}
+.TaskList{
+    width: 100%;
+    height: 100%;
+    /* background-color: yellow; */
+    /* display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center; */
+    position: relative;
+    display: flex;
+    /* overflow-x: auto; */
+}
+
+.noBorder{
+    border: none !important;
+}
+.notaBiene{
+    /* float: right; */
+    text-align: center;
+    color: red;
+    font-weight: bold;
+}
+.task{
+    padding: 0.5em 0.8em;
+    border-radius: 5px;
+    background-color: #065455;
+    color: white;
+    display: inline-block;
+    margin: 0.5em;
+    /* position: absolute; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95em;
+
+}
+.task-h1{
+    font-size: 0.95em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 2em;
+    justify-content: space-between;
+}
+.task-h1 .occupant{
+    margin-left: 2em;
+    position: relative;
+    bottom: 0.1em;
+}
+.task-h2{
+    height: 5.8em;
+}
+.task-h3{
+    height: 9.4em;
+}
+.task-h4{
+    height: 13.4em;
+}
+/* =============================== */
+/* =============================== */
+/* =============================== */
+/* =============================== */
+/* CREATE A LOT OF SIZE FOR PROJET */
+/* =============================== */
+/* =============================== */
+/* =============================== */
+/* =============================== */
+
+.taskHead{
+    display: flex;
+    flex-direction: row;
+}
+.taskName{
+    /* margin-bottom: 0;
+    margin-top: 0; */
+    /* font-size: 1em; */
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    padding-top: 0.2em;
+}
+.taskType{
+    border-radius: 5px;
+    padding: 0.1em 0.4em;
+    background-color: black;
+    color: white;
+    display: flex;
+    align-items: center;
+    margin-right: 1.7em;
+    font-size: 0.9em;
+}
+.task div:last-of-type p{
+    text-align: center;
+    color: white;
+    margin-bottom: 0.3em;
+    margin-top: 0.55em;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+.task-space{
+    pointer-events: none;
+    user-select: none;
+    /* opacity: 0; */
+    color: transparent;
+    background-color: transparent !important;
+}
+.task-space .taskHead .taskType{
+    background-color: transparent !important;
+    color: transparent !important;
+}
+.result-swiper{
+    padding: 0.3em 0.4em;
+    margin-right: 0.8em;
+    background-color: #065455;
+    color: white;
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 5px;
+    position: relative;
+    top: 0.05em;
+    transition: all .3s ease-in;
+}
+.result-swiper:hover{
+    /* background-color: orange; */
+    cursor: pointer;
+}
+.result-swiper i{
+    position: relative;
+    left: 0.14em;
+}
+.menuBtn-mobil{
+    padding: 0.2em 0.4em;
+    background-color: #065455;
+    color: white;
+    border-radius: 5px;
+    display: none;
+}
+@media screen and (max-width: 720px){
+    .menuBtn-mobil{
+        display: block !important;
+    }
+    .menuBtn{
+        display: none;
+    }
+    .flex-column{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .menu{
+        margin-bottom: 0.8em;
+    }
+    .result-swiper{
+        display: none;
+    }
+
+}
+.hidden{
+    display: none !important;
+    opacity: 1;
+    pointer-events: none;
+    position: absolute;
 }

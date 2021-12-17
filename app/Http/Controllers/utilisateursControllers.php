@@ -1,7 +1,18 @@
 <?php
 
+// ===============================================
+// ===============================================
+// ===============================================
+// ===============================================
+// ===================DEPRECATED==================
+// ===============================================
+// ===============================================
+// ===============================================
+// ===============================================
+
 namespace App\Http\Controllers;
 
+use Throwable;
 use App\Models\Utilisateur;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -16,12 +27,37 @@ class utilisateursControllers extends Controller
             'password-register_confirmation' => 'required'
         ]);
 
-        $utilisateur = Utilisateur::create([
-            'email' => request('email-register'),
-            'password' => bcrypt(request('password-register')),
-        ]);
+        $validatedData = [
+            'email'     => request('email-register'),
+            'password'  => bcrypt(request('password-register')),
+        ];
 
+        $newUser = new Utilisateur();
+        $newUser->fill($validatedData);
+
+        try
+        {
+            $newUser->saveOrFail();
+        }
+        catch (Throwable)
+        {
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'status' => 'Oops! An error occur while trying to register.'
+                ]);
+        }
+
+        // Auth::login($newUser, true);
+        // return redirect('/');
         return redirect('/login')->with('state', 'Account successfully created. Login right now !');
+
+        // $utilisateur = Utilisateur::create([
+        //     'email' => request('email-register'),
+        //     'password' => bcrypt(request('password-register')),
+        // ]);
+
+        // return redirect('/login')->with('state', 'Account successfully created. Login right now !');
     }
 
     public function authenticate(Request $request) {
